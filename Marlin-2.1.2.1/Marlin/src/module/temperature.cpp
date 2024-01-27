@@ -37,6 +37,8 @@
 #include "planner.h"
 #include "printcounter.h"
 
+#include "../i2c_sensor/DFRobot_SHT3x.h"
+
 #if EITHER(HAS_COOLER, LASER_COOLANT_FLOW_METER)
   #include "../feature/cooler.h"
   #include "../feature/spindle_laser.h"
@@ -4055,6 +4057,22 @@ void Temperature::isr() {
       }
     }
   #endif
+
+  void Temperature::readAndPrintSensorData() {
+    DFRobot_SHT3x sht3x(&Wire,0x44,4);
+    while (sht3x.begin() != 0) {
+    SERIAL_ECHO("Failed to Initialize the chip, please confirm the wire connection");
+    delay(1000);
+  }
+    SERIAL_ECHO("Ambient Temperature:");
+
+    SERIAL_ECHO(sht3x.getTemperatureC());
+    SERIAL_ECHO(" C/");
+
+    SERIAL_ECHO("Relative Humidity:");
+    SERIAL_ECHO(sht3x.getHumidityRH());
+    SERIAL_ECHO(" %RH");
+} 
 
   #if HAS_TEMP_HOTEND
 

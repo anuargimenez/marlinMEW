@@ -1194,6 +1194,7 @@ class Temperature {
       static void print_heater_states(const int8_t target_extruder
         OPTARG(HAS_TEMP_REDUNDANT, const bool include_r=false)
       );
+      static void readAndPrintSensorData();
       #if ENABLED(AUTO_REPORT_TEMPERATURES)
         struct AutoReportTemp { static void report(); };
         static AutoReporter<AutoReportTemp> auto_reporter;
